@@ -32,6 +32,9 @@
                     <tbody>
                     <tr th:each="laptop : ${laptops}">
                         <td th:text="${laptop.laptop_id}"></td>
+                        <td> 
+                            <img th:src="@{'/img1/'+ ${laptop.imageURL}}" alt="Laptop Image" style="width: 100px;">
+                        </td>
                         <td th:text="${laptop.laptop_name}"></td>
                         <td th:text="${laptop.laptop_price}"></td>
                         <td>
@@ -42,6 +45,7 @@
                         </td>
                     </tr>
                     </tbody>
+                    
                 </table>
             </div>
         </main>

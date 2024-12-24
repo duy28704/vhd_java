@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>So Sánh Laptop</title>
+    <link rel="stylesheet" th:href="@{https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css}">
+    <style>
+        .highlight{
+            background-color: rgb(238, 8, 31) !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2 class="text-center mt-4">So Sánh Laptop</h2>
+        <div>
+            <label>
+                <input type="checkbox" id="highlight-checkbox" onchange="highlightDifferences()"> Highlight sự khác biệt
+            </label>
+        </div>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Thông số</th>
+                    <th th:each="laptop : ${laptops}">
+                        <div th:text="${laptop.laptop_name}"></div>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Hình ảnh</td>
+                    <td th:each="laptop : ${laptops}">
+                        <img th:src="@{laptop.imageURL}" alt="Laptop Image" style="width: 100px;"> 
+                    </td>
+                </tr>
+                <tr>
+                    <td>Công nghệ CPU</td>
+                    <td th:each="laptop : ${laptops}" th:text="${laptop.cpu.cpu_technology}"  class="cpu-technology" th:data-value="${laptop.cpu.cpu_technology}"></td>
+                </tr>
+                <tr>
+                    <td>Số nhân</td>
+                    <td th:each="laptop : ${laptops}" th:text="${laptop.cpu.num_cores}" class="cpu-cores"></td>
+                </tr>
+                <tr>
+                    <td>Số luồng</td>
+                    <td th:each="laptop : ${laptops}" th:text=${laptop.cpu.num_threads} class="cpu-threads"></td>
+                </tr>
+                <tr>
+                    <td>Tốc độ CPU</td>
+                    <td th:each="laptop : ${laptops}" th:text="${laptop.cpu.cpu_speed}" class="cpu-speed"></td>
+                </tr>
+                <tr>
+                    <td>Tốc độ tối đa</td>
+                    <td th:each="laptop : ${laptops}" th:text="${laptop.cpu.cpu_maxspeed}"  class="cpu-maxspeed"></td>
+                </tr>
+                <tr>
+                    <td>Bộ nhớ đệm</td>
+                    <td th:each="laptop : ${laptops}" th:text="${laptop.cpu.cache_size}"  class="cpu-cache"></td>
+                </tr>
+                <tr>
+                    <td>Ram</td>
+                    <td th:each="laptop : ${laptops}" th:text="${laptop.ram.ram_min}" class="ram-min"></td>
+                </tr>
+                <tr>
+                    <td>Loại RAM</td>
+                    <td th:each="laptop : ${laptops}" th:text="${laptop.ram.ram_type}" class="ram-type"></td>
+                </tr>
+                <tr>
+                    <td>Tốc độ bus Ram</td>
+                    <td th:each="laptop : ${laptops}" th:text="${laptop.ram.ram_speed}"class="ram-speed"></td>
+                </tr>
+                <tr>
+                    <td>Hỗ trợ Ram tối đa</td>
+                    <td th:each="laptop : ${laptops}" th:text="${laptop.ram.max_ram}" class="ram-max"></td>
+                </tr>
+                <tr>
+                    <td>Ổ cứng</td>
+                    <td th:each="laptop : ${laptops}" th:text="${laptop.ram.ram_storage}"class="ram-storage"></td>
+                </tr>
+                <tr>
+                    <td>Màn hình</td>
+                    <td th:each="laptop : ${laptops}" th:text="${laptop.screen.screen_size}"class="screen-size"></td>
+                </tr>
+                <tr>
+                    <td>Độ phân giải</td>
+                    <td th:each="laptop : ${laptops}" th:text="${laptop.screen.resolution}" class="screen-resolution"></td>
+                </tr>
+                <tr>
+                    <td>Tần số quét</td>
+                    <td th:each="laptop : ${laptops}" th:text="${laptop.screen.refresh_rate}"class="screen-refresh-rate"></td>
+                </tr>
+                <tr>
+                    <td>Độ phủ màu</td>
+                    <td th:each="laptop : ${laptops}" th:text="${laptop.screen.color_coverage}"class="screen-color-coverage"></td>
+                </tr>
+                <tr>
+                    <td>Công nghệ màn hình</td>
+                    <td th:each="laptop : ${laptops}" th:text="${laptop.screen.screen_technology}" class="screen-technology"></td>
+                </tr>
+                <tr>
+                    <td>Card màn hình</td>
+                    <td th:each="laptop : ${laptops}" th:text="${laptop.graphics_audio.graphics_card}"class="graphics-card"></td>
+                </tr>
+                <tr>
+                    <td>Công nghệ âm thanh</td>
+                    <td th:each="laptop : ${laptops}" th:text="${laptop.graphics_audio.audio_technology}" class="audio-technology"></td>
+                </tr>
+                <tr>
+                    <td>Cổng giao tiếp</td>
+                    <td th:each="laptop : ${laptops}" th:text="${laptop.ports_features.port_type}"  class="port-type"></td>
+                </tr>
+                <tr>
+                    <td>Kết nối không dây</td>
+                    <td th:each="laptop : ${laptops}" th:text="${laptop.ports_features.wireless_connection}" class="wireless-connection"></td>
+                </tr>
+                <tr>
+                    <td>Khe đọc thẻ nhớ</td>
+                    <td th:each="laptop : ${laptops}" th:text="${laptop.ports_features.extra_features}"  class="extra-features"></td>
+                </tr>
+                <tr>
+                    <td>Web cam</td>
+                    <td th:each="laptop : ${laptops}" th:text="${laptop.ports_features.webcam}"  class="webcam"></td>
+                </tr>
+                <tr>
+                    <td>Đèn màn hình</td>
+                    <td th:each="laptop : ${laptops}" th:text="${laptop.ports_features.keyboard_blacklight}" class="keyboard-blacklight"></td>
+                </tr>
+                <tr>
+                    <td>Kích thước</td>
+                    <td th:each="laptop : ${laptops}" th:text="${laptop.dimension_weight.dimension}" class="dimension"></td>
+                </tr>
+                <tr>
+                    <td>Khối lượng tịnh</td>
+                    <td th:each="laptop : ${laptops}" th:text="${laptop.dimension_weight.weight}" class="weight"></td>
+                </tr>
+                <tr>
+                    <td>Chát liệu</td>
+                    <td th:each="laptop : ${laptops}" th:text="${laptop.dimension_weight.material}" class="material"></td>
+                </tr>
+                <tr>
+                    <td>Thông tin pin</td>
+                    <td th:each="laptop : ${laptops}" th:text="${laptop.other_info.batery_info}" class="battery-info"></td>
+                </tr>
+                <tr>
+                    <td>Công suất bộ sạc</td>
+                    <td th:each="laptop : ${laptops}" th:text="${laptop.other_info.charger_power}"class="charger-power"></td>
+                </tr>
+                <tr>
+                    <td>Hệ điều hành</td>
+                    <td th:each="laptop : ${laptops}" th:text="${laptop.other_info.operating_system}" class="operating-system"></td>
+                </tr>
+                <tr>
+                    <td>Thời điểm ra mắt</td>
+                    <td th:each="laptop : ${laptops}" th:text="${laptop.other_info.release_date}" class="release-date"></td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="text-center mt-4">
+            <a th:href="@{/User/home}" class="btn btn-primary">Quay lại</a>
+        </div>
+    </div>
+    <script>
+        function checkHighlight() {
+            const highlightedCells = document.querySelectorAll('.highlight');
+            if (highlightedCells.length > 0) {
+        console.log(`${highlightedCells.length} ô đã được tô màu.`);
+            } else {
+        console.log('Không có ô nào được tô màu.');
+            }
+            }
+        function highlightDifferences() {
+            const checkbox = document.getElementById('highlight-checkbox');
+            
+    
+            // Các thông số cần so sánh
+            const rows = [
+                { selector: '.cpu-technology', name: 'Công nghệ CPU' },
+                { selector: '.cpu-cores', name: 'Số nhân' },
+                { selector: '.cpu-threads', name: 'Số luồng' },
+                { selector: '.cpu-speed', name: 'Tốc độ CPU' },
+                { selector: '.cpu-maxspeed', name: 'Tốc độ tối đa' },
+                { selector: '.cpu-cache', name: 'Bộ nhớ đệm' },
+                { selector: '.ram-min', name: 'Ram' },
+                { selector: '.ram-type', name: 'Loại RAM' },
+                { selector: '.ram-speed', name: 'Tốc độ bus Ram' },
+                { selector: '.ram-max', name: 'Hỗ trợ Ram tối đa' },
+                { selector: '.ram-storage', name: 'Ổ cứng' },
+                { selector: '.screen-size', name: 'Màn hình' },
+                { selector: '.screen-resolution', name: 'Độ phân giải' },
+                { selector: '.screen-refresh-rate', name: 'Tần số quét' },
+                { selector: '.screen-color-coverage', name: 'Độ phủ màu' },
+                { selector: '.screen-technology', name: 'Công nghệ màn hình' },
+                { selector: '.graphics-card', name: 'Card màn hình' },
+                { selector: '.audio-technology', name: 'Công nghệ âm thanh' },
+                { selector: '.port-type', name: 'Cổng giao tiếp' },
+                { selector: '.wireless-connection', name: 'Kết nối không dây' },
+                { selector: '.extra-features', name: 'Khe đọc thẻ nhớ' },
+                { selector: '.webcam', name: 'Web cam' },
+                { selector: '.keyboard-blacklight', name: 'Đèn màn hình' },
+                { selector: '.dimension', name: 'Kích thước' },
+                { selector: '.weight', name: 'Khối lượng tịnh' },
+                { selector: '.material', name: 'Chất liệu' },
+                { selector: '.battery-info', name: 'Thông tin pin' },
+                { selector: '.charger-power', name: 'Công suất bộ sạc' },
+                { selector: '.operating-system', name: 'Hệ điều hành' },
+                { selector: '.release-date', name: 'Thời điểm ra mắt' }
+            ];
+    
+            rows.forEach(row => {
+            const cells = document.querySelectorAll(row.selector);
+            const values = Array.from(cells).map(cell => cell.textContent.trim());
+    
+            if (checkbox.checked) {
+                cells.forEach(cell => {
+                    const value = cell.textContent.trim();
+                    
+                    // Kiểm tra sự khác biệt giữa các giá trị
+                    const isDifferent = values.some(val => val !== value);
+                    if (isDifferent) {
+                        cell.classList.add('highlight'); // Highlight nếu có sự khác biệt
+                    } else {
+                        cell.classList.remove('highlight');
+                    }
+                });
+            } else {
+                cells.forEach(cell => {
+                    cell.classList.remove('highlight'); // Nếu bỏ chọn thì không highlight
+                });
+            }
+        });
+        checkHighlight();
+    }
+        
+</script>
+</body>
+</html>

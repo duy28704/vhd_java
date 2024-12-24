@@ -6,8 +6,8 @@ package com.example.laptops.model.laptop;
 public class CPU {
 
 	private int cpu_id;
-	private Laptop laptop;
 	private String cpu_technology;
+	private Laptop laptop;
 	private int num_cores;
 	private int num_threads;
 	private String cpu_speed;
@@ -71,5 +71,5 @@ public class CPU {
 	public void setLaptop(Laptop laptop) {
 		this.laptop = laptop;
 	}
-
+	
 }

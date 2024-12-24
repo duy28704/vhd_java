@@ -3,6 +3,7 @@ package com.example.laptops.model.laptop;
 public class Laptop {
 	
 	private Integer laptop_id;
+	private String imageURL ;
 	private String laptop_price ;
 	private String laptop_name;
 	private CPU cpu;
@@ -80,6 +81,12 @@ public class Laptop {
 		this.laptop_price = laptop_price;
 		this.laptop_name = laptop_name;
 		this.cpu = cpu;
+	}
+	public String getImageURL() {
+		return imageURL;
+	}
+	public void setImageURL(String imageURL) {
+		this.imageURL = imageURL;
 	}
 	
 }

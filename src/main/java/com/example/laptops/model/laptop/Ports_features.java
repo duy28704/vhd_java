@@ -3,13 +3,12 @@ package com.example.laptops.model.laptop;
 public class Ports_features {
 	
 	private int ports_features_id ;
-	private Laptop laptop;
-	
 	private String port_type;
 	private String wireless_connection ;
 	private String webcam ;
 	private String extra_features;
 	private String keyboard_blacklight;
+	private Laptop laptop;
 	
 	public int getPorts_features_id() {
 		return ports_features_id;
@@ -80,5 +79,4 @@ public class Ports_features {
 	public void setLaptop(Laptop laptop) {
 		this.laptop = laptop;
 	}
-
 }

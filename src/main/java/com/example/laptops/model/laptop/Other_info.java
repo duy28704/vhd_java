@@ -5,11 +5,11 @@ package com.example.laptops.model.laptop;
 public class Other_info {
 	
 	private int other_info_id;
-	private Laptop laptop;
 	private String batery_info;
 	private String charger_power;
 	private String operating_system;
 	private String release_date;
+	private Laptop laptop;
 	public Other_info() {
 		
 	}

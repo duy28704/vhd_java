@@ -4,21 +4,14 @@ public class Graphics_audio {
 	
 	
 	private int graphics_audio_id;
-	
-	private Laptop laptop;
 	private String graphics_card;
 	private String audio_technology;
+	private Laptop laptop;
 	public int getGraphics_audio_id() {
 		return graphics_audio_id;
 	}
 	public void setGraphics_audio_id(int graphics_audio_id) {
 		this.graphics_audio_id = graphics_audio_id;
-	}
-	public Laptop getLaptop() {
-		return laptop;
-	}
-	public void setLaptop(Laptop laptop) {
-		this.laptop = laptop;
 	}
 	public String getGraphics_card() {
 		return graphics_card;
@@ -34,6 +27,12 @@ public class Graphics_audio {
 	}
 	public Graphics_audio() {
 		// TODO Auto-generated constructor stub
+	}
+	public Laptop getLaptop() {
+		return laptop;
+	}
+	public void setLaptop(Laptop laptop) {
+		this.laptop = laptop;
 	}
 
 }

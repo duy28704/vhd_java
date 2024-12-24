@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import org.springframework.jdbc.core.RowMapper;
 
 import com.example.laptops.model.laptop.CPU;
+import com.example.laptops.model.laptop.Laptop;
 
 public class CPURowMapper implements RowMapper<CPU> {
 
@@ -19,6 +20,9 @@ public class CPURowMapper implements RowMapper<CPU> {
         cpu.setCpu_speed(rs.getString("cpu_base_clock"));
         cpu.setCpu_maxspeed(rs.getString("cpu_max_clock"));
         cpu.setCache_size(rs.getString("cpu_cache"));
+        Laptop laptop = new Laptop();
+        laptop.setLaptop_id(rs.getInt("laptop_id")); // Gán laptop_id cho laptop
+        cpu.setLaptop(laptop);
 		return cpu;
 	}
 

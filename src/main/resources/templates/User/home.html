@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sản Phẩm</title>
+    <link th:href="@{https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css}" rel="stylesheet">
+    <link th:href="@{https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css}" rel="stylesheet">
+    <style>
+        .product-card {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        .product-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .product-image {
+            max-width: 100%;
+            height: auto;
+            border-bottom: 1px solid #ddd;
+        }
+        .product-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+        .product-price {
+            color: #f60;
+            font-size: 16px;
+        }
+       
+        #loadMore:disabled .spinner-border {
+        display: inline-block !important;
+        }
+        .btn {
+        padding: 10px 20px;
+        font-size: 14px;
+        border-radius: 5px;
+        font-weight: bold;
+        text-transform: uppercase;
+        }
+
+        .btn-primary, .compare-btn {
+        background-color: #007bff; /* Màu xanh lam */
+        border: none;
+        color: #fff;
+        transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover, .compare-btn:hover {
+    background-color: #0056b3; /* Màu xanh đậm hơn */
+    transform: translateY(-2px); /* Hiệu ứng hover */
+        }
+
+
+        .compare-btn:hover {
+    background-color: #218838; /* Màu xanh đậm hơn */
+        }
+        product-card {
+    border: 1px solid #ddd;
+    padding: 15px;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.compare-btn {
+    background-color:green;
+    color: white;
+    border-radius: 15px;
+    cursor: pointer;
+}
+
+.compare-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: #fff;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+    padding: 15px;
+    z-index: 1000;
+    display: none; /* Ban đầu ẩn */
+    overflow-x: auto;
+    max-width: 100%;
+}
+
+.compare-bar-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.compare-bar .compare-item {
+    display: flex;
+    align-items: center;
+    margin-right: 15px;
+}
+
+.compare-bar .compare-item img {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 5px;
+    margin-right: 10px;
+}
+
+.compare-bar .compare-item button {
+    background-color: #ff3333;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+.compare-bar button:disabled {
+    background-color: #cccccc;
+}
+
+.compare-bar .actions {
+    display: flex;
+    gap: 10px;
+}
+
+.compare-bar .actions button {
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.compare-bar .actions button#compareActionButton:disabled {
+    background-color: #cccccc;
+}
+
+.compare-bar .actions button#clearAllButton {
+    background-color: #f0f0f0;
+}
+.close-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: #f44336;
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 50%;
+}
+.notification {
+    display: none;
+    position: fixed;
+    top: 50%; /* Giữa màn hình theo chiều dọc */
+    left: 50%; /* Giữa màn hình theo chiều ngang */
+    transform: translate(-50%, -50%); /* Dịch chuyển để căn giữa */
+    background-color: #4caf50;
+    color: white;
+    padding: 10px 20px; /* Điều chỉnh padding */
+    border-radius: 5px;
+    z-index: 999;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Hiệu ứng bóng mờ */
+    text-align: center; /* Căn giữa nội dung */
+}
+.notification.show {
+    display: block;
+}
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
+        <div class="container">
+            <a class="navbar-brand font-weight-bold" href="#">Laptop Shop</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <form class="form-inline my-2 my-lg-0 mx-auto d-flex w-50">
+                    <input class="form-control me-2" type="search" placeholder="Tìm kiếm sản phẩm..." aria-label="Search">
+                    <button class="btn btn-outline-light" type="submit">Tìm kiếm</button>
+                </form>
+                <a class="btn btn-outline-light me-2" href="#"><i class="bi bi-cart"></i> Giỏ hàng</a>
+            </div>
+        </div>
+    </nav>
+<div class="container mt-4">
+    <div class="row">
+        <!-- Sidebar Bộ lọc -->
+        <div class="col-md-3">
+            <h5 class="text-primary">Bộ lọc sản phẩm</h5>
+            <form id="filterForm">
+                <div class="form-group">
+                    <label for="brand">Hãng:</label>
+                    <select name="brand" id="brand" class="form-control">
+                        <option value="">Tất cả</option>
+                        <option value="dell">Dell</option>
+                        <option value="hp">HP</option>
+                        <option value="asus">Asus</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="priceRange">Khoảng giá (VNĐ):</label>
+                    <input type="text" id="priceRange" readonly class="form-control mb-2">
+                    <input type="range" name="minPrice" min="5000000" max="50000000" value="10000000" id="minPrice" class="form-control-range">
+                    <input type="range" name="maxPrice" min="5000000" max="50000000" value="30000000" id="maxPrice" class="form-control-range">
+                </div>
+                
+                <button type="button" id="applyFilter" class="btn btn-primary btn-block">Áp dụng</button>
+            </form>
+        </div>
+<div class="container md-9">
+    <div class="row" id="productContainer">
+        <div class="col-md-3" th:each="laptop : ${laptops}">
+            <div class="product-card">
+                <img th:src="${laptop.imageURL}" alt="Laptop Image" class="product-image"> 
+                <div class="product-title" th:text="${laptop.laptop_name}"></div>
+                <div class="product-price" th:text="'Giá: ' + ${laptop.laptop_price} + ' VND'"></div>
+                <a th:href="@{'/detailss/' + ${laptop.laptop_id}}" class="btn btn-primary mt-2">Chi tiết</a>
+                <button class="compare-btn" th:data-laptop-id="${laptop.laptop_id}" >So sánh</button>
+            </div>
+        </div>
+    </div>
+    <div class="text-center mt-4" id="loadMoreContainer">
+        <button id="loadMore" class="btn btn-outline-primary btn-lg px-5">
+            <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+            <span class="button-text">Xem thêm</span>
+        </button>
+    </div>
+</div>
+<div id="compareBar" class="compare-bar">
+    <button id="closeCompareBar" class="close-btn">X</button>
+    <div class="compare-bar-content">
+        <!-- Các sản phẩm đã chọn sẽ hiển thị ở đây -->
+    </div>
+    <div class="actions">
+        <button id="compareActionButton" class="btn btn-primary" disabled>Đi tới so sánh</button>
+        <button id="clearAllButton" class="btn btn-secondary">Xóa tất cả</button>
+    </div>
+</div>
+<div id="addedNotification" class="notification">
+    <span id="addedNotificationMessage"></span>
+</div>
+</body>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    currentPage = 0; // Reset currentPage khi trang được tải
+});
+
+const pageSize = 10;
+let displayedLaptops = [];
+
+document.getElementById('loadMore').addEventListener('click', function () {
+    const loadMoreButton = this;
+    const spinner = loadMoreButton.querySelector('.spinner-border');
+    const buttonText = loadMoreButton.querySelector('.button-text');
+    const selectedBrand = document.getElementById('brand').value; // Lấy giá trị bộ lọc
+
+    spinner.classList.remove('d-none');
+    buttonText.textContent = "Đang tải...";
+    loadMoreButton.disabled = true;
+
+    // Gửi yêu cầu AJAX 
+    fetch(`/api/laptops/filters?brand=${selectedBrand}`)
+        .then(response => response.json())
+        .then(laptops => {
+            const container = document.getElementById('productContainer');
+            const newLaptops = laptops.filter(laptop => {
+                return !displayedLaptops.some(displayedLaptop => displayedLaptop.laptop_id === laptop.laptop_id);
+            });
+            newLaptops.forEach(laptop => {
+                const card = document.createElement('div');
+                card.className = 'col-md-3';
+                card.innerHTML = `
+                    <div class="product-card">
+                        <!--<img src="${laptop.imageUrl}" alt="Laptop Image" class="product-image"> --> 
+                        <div class="product-title">${laptop.laptop_name}</div>
+                        <div class="product-price">Giá: ${laptop.laptop_price} VND</div>
+                        <a href="/details/${laptop.laptop_id}" class="btn btn-primary mt-2">Chi tiết</a>
+                        <button class="btn compare-btn mt-2">So sánh</button>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+            displayedLaptops = [...displayedLaptops, ...newLaptops];
+            // Hoàn tất tải
+            spinner.classList.add('d-none');
+            buttonText.textContent = "Xem thêm";
+            loadMoreButton.disabled = false;
+
+            // Ẩn nút nếu không còn sản phẩm
+            if (laptops.length < pageSize) {
+                loadMoreButton.style.display = 'none';
+            }
+        })
+        .catch(error => {
+            console.error("Error loading laptops:", error);
+            spinner.classList.add('d-none');
+            buttonText.textContent = "Xem thêm";
+            loadMoreButton.disabled = false;
+        });
+});
+    document.getElementById('applyFilter').addEventListener('click', function () {
+    const selectedBrand = document.getElementById('brand').value;
+    fetch(`/api/laptops/filter?brand=${selectedBrand}`)
+        .then(response => response.json())
+        .then(laptops => {
+            const container = document.getElementById('productContainer');
+            container.innerHTML = ''; // Xóa sản phẩm cũ
+
+            laptops.forEach(laptop => {
+                const card = document.createElement('div');
+                card.className = 'col-md-3';
+                card.innerHTML = `
+                        <div class="product-card">
+                            <!--<img src="${laptop.imageUrl}" alt="Laptop Image" class="product-image"> --> 
+                            <div class="product-title">${laptop.laptop_name}</div>
+                            <div class="product-price">Giá: ${laptop.laptop_price} VND</div>
+                            <a href="/details/${laptop.laptop_id}" class="btn btn-primary mt-2">Chi tiết</a>
+                            <button class="btn compare-btn mt-2">So sánh</button>
+                        </div>
+                `;
+                container.appendChild(card);
+            });
+        })
+        .catch(error => {
+            console.error('Error fetching laptops:', error);
+        });
+});
+let compareSlots = [null, null, null]; // Ba slot để lưu thông tin laptop
+
+// Lắng nghe sự kiện nhấn vào nút "So sánh"
+document.getElementById('productContainer').addEventListener('click', function (event) {
+    if (event.target && event.target.classList.contains('compare-btn')) {
+        const laptopId = event.target.getAttribute('data-laptop-id'); // Lấy ID laptop
+        console.log("Laptop ID:", laptopId); 
+        const laptopName = event.target.closest('.product-card').querySelector('.product-title').textContent;
+
+        // Kiểm tra xem sản phẩm đã được thêm vào chưa
+        const existingProductIndex = compareSlots.findIndex(slot => slot && slot.laptop_id === laptopId);
+
+        if (existingProductIndex !== -1) {
+            // Nếu sản phẩm đã tồn tại, xóa sản phẩm khỏi danh sách so sánh
+            compareSlots[existingProductIndex] = null;
+        } else {
+            // Tìm vị trí trống đầu tiên trong compareSlots
+            let added = false;
+            for (let i = 0; i < compareSlots.length; i++) {
+                if (compareSlots[i] === null) {  // Nếu slot trống
+                    compareSlots[i] = { laptop_id: laptopId, laptop_name: laptopName }; // Thêm sản phẩm vào slot trống
+                    added = true;
+                    break;
+                }
+            }
+
+            // Nếu không còn vị trí trống, không làm gì và dừng
+            if (!added) {
+                return;
+            }
+        }
+        // Cập nhật giao diện sau khi thêm/xóa sản phẩm
+        updateCompareBar();  // Cập nhật thanh so sánh
+        showCompareBar();    // Hiển thị thanh so sánh nếu có sản phẩm
+    }
+});
+// Cập nhật giao diện thanh so sánh
+function updateCompareBar() {
+    const compareBarContent = document.querySelector('.compare-bar-content');
+    compareBarContent.innerHTML = ''; // Xóa tất cả các slot cũ
+
+    compareSlots.forEach((laptop, index) => {
+        const slot = document.createElement('div');
+        slot.classList.add('product-slot');
+        if (laptop) {
+            slot.innerHTML = `
+                <div>${laptop.laptop_name}</div>
+                <button class="btn btn-danger btn-sm remove-btn" data-slot="${index}">Xóa</button>
+            `;
+            compareBarContent.appendChild(slot);
+        } else {
+            slot.innerHTML = `<div class="empty-slot">Chọn sản phẩm để thêm</div>`;
+            compareBarContent.appendChild(slot);
+        }
+    });
+
+    // Cập nhật trạng thái nút "Đi tới so sánh"
+    const compareActionButton = document.getElementById('compareActionButton');
+    compareActionButton.disabled = compareSlots.filter(slot => slot !== null).length < 2;
+}
+
+// Hiển thị thanh so sánh
+function showCompareBar() {
+    const compareBar = document.getElementById('compareBar');
+    compareBar.style.display = 'flex'; // Hiển thị thanh so sánh
+}
+
+// Lắng nghe sự kiện xóa laptop trong slot
+document.getElementById('compareBar').addEventListener('click', function (event) {
+    if (event.target && event.target.classList.contains('remove-btn')) {
+        const slotIndex = event.target.getAttribute('data-slot');
+        compareSlots[slotIndex] = null; // Xóa sản phẩm khỏi slot
+        updateCompareBar(); // Cập nhật lại giao diện thanh so sánh
+    }
+});
+
+// Lắng nghe sự kiện đi tới trang so sánh
+document.getElementById('compareActionButton').addEventListener('click', function () {
+    const selectedLaptopIds = compareSlots.filter(slot => slot !== null).map(slot => slot.laptop_id);
+    if (selectedLaptopIds.length < 2) {
+        alert('Vui lòng chọn ít nhất 2 sản phẩm để so sánh.');
+    } else {
+        // Điều hướng tới trang so sánh với các laptop đã chọn
+        window.location.href = '/compare?laptopIds=' + selectedLaptopIds.join(',');
+    }
+});
+
+// Lắng nghe sự kiện xóa tất cả các sản phẩm
+document.getElementById('clearAllButton').addEventListener('click', function () {
+    compareSlots = [null, null, null]; // Reset tất cả các slot
+    updateCompareBar(); // Cập nhật lại thanh so sánh
+});
+document.getElementById('closeCompareBar').addEventListener('click', function () {
+    document.getElementById('compareBar').style.display = 'none'; // Ẩn thanh so sánh
+});
+function showNotification(message) {
+    const notification = document.getElementById('addedNotification');
+    const messageElement = document.getElementById('addedNotificationMessage');
+    messageElement.textContent = message;
+    notification.classList.add('show');
+
+    setTimeout(function () {
+        notification.classList.remove('show');
+    }, 3000); // Ẩn thông báo sau 3 giây
+}
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</html>

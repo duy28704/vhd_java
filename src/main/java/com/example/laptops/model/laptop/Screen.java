@@ -2,23 +2,17 @@ package com.example.laptops.model.laptop;
 
 public class Screen {
 	private int screen_id;
-	private Laptop laptop;
 	private String screen_size;
 	private String resolution;
 	private String refresh_rate;
 	private String color_coverage;
 	private String screen_technology;
+	private Laptop laptop;
 	public int getScreen_id() {
 		return screen_id;
 	}
 	public void setScreen_id(int screen_id) {
 		this.screen_id = screen_id;
-	}
-	public Laptop getLaptop() {
-		return laptop;
-	}
-	public void setLaptop(Laptop laptop) {
-		this.laptop = laptop;
 	}
 	public String getScreen_size() {
 		return screen_size;
@@ -49,5 +43,11 @@ public class Screen {
 	}
 	public void setScreen_technology(String screen_technology) {
 		this.screen_technology = screen_technology;
+	}
+	public Laptop getLaptop() {
+		return laptop;
+	}
+	public void setLaptop(Laptop laptop) {
+		this.laptop = laptop;
 	}
 }
