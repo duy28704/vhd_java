@@ -76,12 +76,7 @@ public class Laptop {
 	
 	public Laptop() {
 	}
-	public Laptop(Integer laptop_id, String laptop_price, String laptop_name, CPU cpu) {
-		this.laptop_id = laptop_id;
-		this.laptop_price = laptop_price;
-		this.laptop_name = laptop_name;
-		this.cpu = cpu;
-	}
+	
 	public String getImageURL() {
 		return imageURL;
 	}

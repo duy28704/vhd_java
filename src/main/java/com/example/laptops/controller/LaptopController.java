@@ -42,7 +42,7 @@ public class LaptopController {
 	      if (laptop_id == null) {
 	    	  model.addAttribute("laptop", new Laptop());
 	      } else {
-	    	  Laptop laptop = laptopService.getLaptopById(laptop_id);
+	    	  Laptop laptop = laptopService.getDetailsLaptopById(laptop_id);
 	          model.addAttribute("laptop", laptop);
 	          
 	      }
@@ -96,7 +96,7 @@ public class LaptopController {
 	      return "redirect:/admin/laptop-list";
 	  }
 
-	  @PutMapping("/admin/update/{laptop_id}")
+	  @PostMapping("/admin/update/{laptop_id}")
 	  public String updateLaptop(@PathVariable Integer laptop_id, @ModelAttribute Laptop laptop) {
 	      laptopService.updateLaptop(laptop);
 	      return "redirect:/admin/laptop-list";

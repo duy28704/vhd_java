@@ -1,7 +1,10 @@
 package com.example.laptops.controller;
 
 
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -45,8 +48,23 @@ public class LaptopAPIController {
 	        return ResponseEntity.ok(filteredLaptops);
 	    }
 	    @PostMapping("/compare")
-	    public ResponseEntity<List<Laptop>> getCompareList(@RequestBody List<Integer> laptopIds) {
+	    public ResponseEntity<Map<String, List<Object>>> getCompareList(@RequestBody List<Integer> laptopIds) {
 	        List<Laptop> Comparelaptops = laptopService.getLaptopByIds(laptopIds);
-	        return ResponseEntity.ok(Comparelaptops);
+	        Map<String, List<Object>> comparisonData = new LinkedHashMap<>();
+
+	        // Thêm tiêu đề laptop
+	        comparisonData.put("Laptop Name", Comparelaptops.stream().map(Laptop::getLaptop_name).collect(Collectors.toList()));
+	        comparisonData.put("Price", Comparelaptops.stream().map(Laptop::getLaptop_price).collect(Collectors.toList()));
+	        comparisonData.put("CPU", Comparelaptops.stream().map(laptop -> laptop.getCpu().getCpu_technology()).collect(Collectors.toList()));
+	        comparisonData.put("CPU Cores", Comparelaptops.stream().map(laptop -> laptop.getCpu().getNum_cores()).collect(Collectors.toList()));
+	        comparisonData.put("RAM", Comparelaptops.stream().map(laptop -> laptop.getRam().getRam_min()).collect(Collectors.toList()));
+	        comparisonData.put("Storage", Comparelaptops.stream().map(laptop -> laptop.getRam().getRam_storage()).collect(Collectors.toList()));
+	        comparisonData.put("Screen Size", Comparelaptops.stream().map(laptop -> laptop.getScreen().getScreen_size()).collect(Collectors.toList()));
+	        comparisonData.put("Resolution", Comparelaptops.stream().map(laptop -> laptop.getScreen().getResolution()).collect(Collectors.toList()));
+	        comparisonData.put("Graphics Card", Comparelaptops.stream().map(laptop -> laptop.getGraphics_audio().getGraphics_card()).collect(Collectors.toList()));
+	        comparisonData.put("Weight", Comparelaptops.stream().map(laptop -> laptop.getDimension_weight().getWeight()).collect(Collectors.toList()));
+	        comparisonData.put("Battery", Comparelaptops.stream().map(laptop -> laptop.getOther_info().getBatery_info()).collect(Collectors.toList()));
+
+	        return ResponseEntity.ok(comparisonData);
 	    }
 	}

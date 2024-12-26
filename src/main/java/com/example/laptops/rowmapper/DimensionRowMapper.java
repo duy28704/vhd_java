@@ -17,9 +17,9 @@ public class DimensionRowMapper implements RowMapper<Dimension_weight> {
 	     dimension.setWeight(rs.getString("weightt"));
 	     dimension.setMaterial(rs.getString("material"));
 	     Laptop laptop = new Laptop();
-	        laptop.setLaptop_id(rs.getInt("laptop_id")); // Gán laptop_id cho laptop
-	        dimension.setLaptop(laptop);
-		return dimension;
+	     laptop.setLaptop_id(rs.getInt("laptop_id")); // Gán laptop_id cho laptop
+	     dimension.setLaptop(laptop);
+		 return dimension;
 	}
 
 }

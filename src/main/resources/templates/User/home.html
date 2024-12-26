@@ -172,7 +172,7 @@
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
         <div class="container">
-            <a class="navbar-brand font-weight-bold" href="#">Laptop Shop</a>
+            <a class="navbar-brand font-weight-bold" th:href="@{/User/home}">Laptop Shop</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -216,7 +216,7 @@
     <div class="row" id="productContainer">
         <div class="col-md-3" th:each="laptop : ${laptops}">
             <div class="product-card">
-                <img th:src="${laptop.imageURL}" alt="Laptop Image" class="product-image"> 
+                <img th:src="@{'/img1/'+ ${laptop.imageURL}}" alt="Laptop Image" class="product-image"> 
                 <div class="product-title" th:text="${laptop.laptop_name}"></div>
                 <div class="product-price" th:text="'Giá: ' + ${laptop.laptop_price} + ' VND'"></div>
                 <a th:href="@{'/detailss/' + ${laptop.laptop_id}}" class="btn btn-primary mt-2">Chi tiết</a>
@@ -276,7 +276,7 @@ document.getElementById('loadMore').addEventListener('click', function () {
                 card.className = 'col-md-3';
                 card.innerHTML = `
                     <div class="product-card">
-                        <!--<img src="${laptop.imageUrl}" alt="Laptop Image" class="product-image"> --> 
+                        <img  src="/img1/${laptop.imageURL}" alt="Laptop Image" class="product-image"> 
                         <div class="product-title">${laptop.laptop_name}</div>
                         <div class="product-price">Giá: ${laptop.laptop_price} VND</div>
                         <a href="/details/${laptop.laptop_id}" class="btn btn-primary mt-2">Chi tiết</a>
@@ -316,7 +316,7 @@ document.getElementById('loadMore').addEventListener('click', function () {
                 card.className = 'col-md-3';
                 card.innerHTML = `
                         <div class="product-card">
-                            <!--<img src="${laptop.imageUrl}" alt="Laptop Image" class="product-image"> --> 
+                            <img src="/img1/${laptop.imageURL}" alt="Laptop Image" class="product-image"> 
                             <div class="product-title">${laptop.laptop_name}</div>
                             <div class="product-price">Giá: ${laptop.laptop_price} VND</div>
                             <a href="/details/${laptop.laptop_id}" class="btn btn-primary mt-2">Chi tiết</a>

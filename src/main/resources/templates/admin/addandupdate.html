@@ -13,28 +13,159 @@
         <h2 class="text-center" th:text="${laptop.laptop_id != null} ? 'Cập Nhật Laptop' : 'Thêm Laptop'"></h2>
         <p th:text="${laptop.laptop_id}"></p>
         <!--Đường dẫn này sẽ truy cập vào post -->
-    <form th:action="@{${laptop.laptop_id!=null} ? '/admin/addandupdate'+ ${laptop.laptop_id} : '/admin/addandupdate'}" 
-        method="post">
-      <div class="form-group">
-          <label for="name">Tên Laptop:</label>
-          <input type="text" id="laptop_name" name="laptop_name" class="form-control" 
-                 th:value="${laptop.laptop_name}" required />
-      </div>
-  
-      <div class="form-group">
-          <label for="brand">Giá:</label>
-          <input type="text" id="laptop_price" name="laptop_price" class="form-control" 
-                 th:value="${laptop.laptop_price}" required />
-      </div>
-      <button type="submit" class="btn btn-success btn-block" 
-              th:text="${laptop.laptop_id != null} ? 'Cập Nhật' : 'Thêm Laptop'"></button>
-  </form>
-
-    <a th:href="@{/admin/laptop_list}" class="btn btn-secondary btn-block mt-3">Trở lại danh sách</a>
+        <form th:action="@{${laptop.laptop_id != null} ? '/admin/addandupdate/' + ${laptop.laptop_id}' : '/admin/addandupdate'}" method="post">
+            <!-- Laptop Information -->
+            <div class="form-group">
+                <label for="laptop_name">Tên Laptop:</label>
+                <input type="text" id="laptop_name" name="laptop_name" class="form-control"
+                       th:value="${laptop.laptop_id != null} ? ${laptop.laptop_name} : ''" required />
+            </div>
+        
+            <div class="form-group">
+                <label for="laptop_price">Giá Laptop:</label>
+                <input type="text" id="laptop_price" name="laptop_price" class="form-control"
+                       th:value="${laptop.laptop_id != null} ? ${laptop.laptop_price} : ''" required />
+            </div>
+        
+            <div class="form-group">
+                <label for="image_url">URL Hình ảnh:</label>
+                <input type="text" id="image_url" name="image_url" class="form-control"
+                       th:value="${laptop.laptop_id != null} ? ${laptop.imageURL} : ''" required/>
+            </div>
+        
+            <!-- CPU Information -->
+            <h3>Thông tin CPU</h3>
+            <div class="form-group">
+                <label for="cpu_technology">Công nghệ CPU:</label>
+                <input type="text" id="cpu_technology" name="cpu.cpu_technology" class="form-control"
+                       th:value="${laptop.laptop_id != null} ? ${laptop.cpu.cpu_technology} : ''" required/>
+            </div>
+        
+            <div class="form-group">
+                <label for="cpu_cores">Số lõi CPU:</label>
+                <input type="text" id="cpu_cores" name="cpu.num_cores" class="form-control"
+                       th:value="${laptop.laptop_id != null} ? ${laptop.cpu.num_cores} : ''" required/>
+            </div>
+        
+            <div class="form-group">
+                <label for="cpu_threads">Số luồng CPU:</label>
+                <input type="text" id="cpu_threads" name="cpu.num_threads" class="form-control"
+                       th:value="${laptop.laptop_id != null} ? ${laptop.cpu.num_threads} : ''" required />
+            </div>
+        
+            <div class="form-group">
+                <label for="cpu_base_clock">Tốc độ cơ bản của CPU (GHz):</label>
+                <input type="text" id="cpu_base_clock" name="cpu.cpu_speed" class="form-control"
+                       th:value="${laptop.laptop_id != null} ? ${laptop.cpu.cpu_speed} : ''" required />
+            </div>
+        
+            <div class="form-group">
+                <label for="cpu_max_clock">Tốc độ tối đa của CPU (GHz):</label>
+                <input type="text" id="cpu_max_clock" name="cpu.cpu_maxspeed" class="form-control"
+                       th:value="${laptop.laptop_id != null} ? ${laptop.cpu.cpu_maxspeed} : ''" required />
+            </div>
+        
+            <div class="form-group">
+                <label for="cpu_cache">Cache CPU (MB):</label>
+                <input type="text" id="cpu_cache" name="cpu.cache_size" class="form-control"
+                       th:value="${laptop.laptop_id != null} ? ${laptop.cpu.cache_size} : ''" required/>
+            </div>
+        
+            <!-- RAM & Storage Information -->
+            <h3>Thông tin RAM & Storage</h3>
+            <div class="form-group">
+                <label for="ram_min">RAM (GB):</label>
+                <input type="text" id="ram_min" name="ram.ram_min" class="form-control"
+                       th:value="${laptop.laptop_id != null} ? ${laptop.ram.ram_min} : ''" required/>
+            </div>
+        
+            <div class="form-group">
+                <label for="ram_type">Loại RAM:</label>
+                <input type="text" id="ram_type" name="ram.ram_type" class="form-control"
+                       th:value="${laptop.laptop_id != null} ? ${laptop.ram.ram_type} : ''" required/>
+            </div>
+        
+            <div class="form-group">
+                <label for="ram_speed">Tốc độ RAM (MHz):</label>
+                <input type="text" id="ram_speed" name="ram.ram_speed" class="form-control"
+                       th:value="${laptop.laptop_id != null} ? ${laptop.ram.ram_speed} : ''" required/>
+            </div>
+        
+            <div class="form-group">
+                <label for="max_ram">Dung lượng RAM tối đa (GB):</label>
+                <input type="text" id="max_ram" name="ram.max_ram" class="form-control"
+                       th:value="${laptop.laptop_id != null} ? ${laptop.ram.max_ram} : ''" required/>
+            </div>
+        
+            <div class="form-group">
+                <label for="ram_storage">Dung lượng bộ nhớ (GB):</label>
+                <input type="text" id="ram_storage" name="ram.ram_storage" class="form-control"
+                       th:value="${laptop.laptop_id != null} ? ${laptop.ram.ram_storage} : ''" required/>
+            </div>
+        
+            <!-- Screen Information -->
+            <h3>Thông tin Màn hình</h3>
+            <div class="form-group">
+                <label for="screen_size">Kích thước màn hình (inch):</label>
+                <input type="text" id="screen_size" name="screen.screen_size" class="form-control"
+                       th:value="${laptop.laptop_id != null} ? ${laptop.screen.screen_size} : ''" required/>
+            </div>
+        
+            <div class="form-group">
+                <label for="resolution">Độ phân giải:</label>
+                <input type="text" id="resolution" name="screen.resolution" class="form-control"
+                       th:value="${laptop.laptop_id != null} ? ${laptop.screen.resolution} : ''" required/>
+            </div>
+        
+            <div class="form-group">
+                <label for="refresh_rate">Tốc độ làm tươi :</label>
+                <input type="text" id="refresh_rate" name="screen.refresh_rate" class="form-control"
+                       th:value="${laptop.laptop_id != null} ? ${laptop.screen.refresh_rate} : ''" required/>
+            </div>
+        
+            <div class="form-group">
+                <label for="color_coverage">Màu sắc phủ màn hình (%):</label>
+                <input type="text" id="color_coverage" name="screen.color_coverage" class="form-control"
+                       th:value="${laptop.laptop_id != null} ? ${laptop.screen.color_coverage} : ''" required/>
+            </div>
+        
+            <div class="form-group">
+                <label for="screen_technology">Công nghệ màn hình:</label>
+                <input type="text" id="screen_technology" name="screen.screen_technology" class="form-control"
+                       th:value="${laptop.laptop_id != null} ? ${laptop.screen.screen_technology} : ''" required/>
+            </div>
+        
+            <!-- Other Features -->
+            <h3>Thông tin Các tính năng khác</h3>
+            <div class="form-group">
+                <label for="battery_info">Thông tin pin:</label>
+                <input type="text" id="battery_info" name="other_info.battery_info" class="form-control"
+                       th:value="${laptop.laptop_id != null} ? ${laptop.other_info.batery_info} : ''" required/>
+            </div>
+        
+            <div class="form-group">
+                <label for="charger_power">Công suất sạc:</label>
+                <input type="text" id="charger_power" name="other_info.charger_power" class="form-control"
+                       th:value="${laptop.laptop_id != null} ? ${laptop.other_info.charger_power} : ''" required/>
+            </div>
+        
+            <div class="form-group">
+                <label for="operating_system">Hệ điều hành:</label>
+                <input type="text" id="operating_system" name="other_info.operating_system" class="form-control"
+                       th:value="${laptop.laptop_id != null} ? ${laptop.other_info.operating_system} : ''" required/>
+            </div>
+        
+            <div class="form-group">
+                <label for="release_year">Năm phát hành:</label>
+                <input type="number" id="release_year" name="other_info.release_year" class="form-control"
+                       th:value="${laptop.laptop_id != null} ? ${laptop.other_info.release_date} : ''" required/>
+            </div>
+        
+            <!-- Submit Button -->
+            <button type="submit" class="btn btn-success btn-block"
+                    th:text="${laptop.laptop_id != null} ? 'Cập Nhật Laptop' : 'Thêm Laptop'"></button>
+        </form>
     </div>
 </main>
-<script th:src="@{https://code.jquery.com/jquery-3.5.1.slim.min.js}"></script>
-<script th:src="@{https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js}"></script>
-<script th:src="@{https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js}"></script>
 </body>
 </html>

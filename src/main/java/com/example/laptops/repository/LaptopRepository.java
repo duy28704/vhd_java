@@ -31,16 +31,125 @@ public class LaptopRepository {
 	@Autowired
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 	public int addLaptop(Laptop laptop) {
-        String sql = "INSERT INTO Laptops (laptop_id,product_name, price) VALUES (:laptop_id, :laptop_name, :laptop_price)";
+        String sql = "INSERT INTO Laptops (laptop_name, laptop_price, image_url) VALUES (:laptop_name, :laptop_price, :image_url)";
 
         MapSqlParameterSource params = new MapSqlParameterSource();
-        params.addValue("id", laptop.getLaptop_id());
-        params.addValue("name", laptop.getLaptop_name());
-        params.addValue("price", laptop.getLaptop_price());
-        return namedParameterJdbcTemplate.update(sql, params);
+        params.addValue("laptop_name", laptop.getLaptop_name());
+        params.addValue("laptop_price", laptop.getLaptop_price());
+        params.addValue("image_url", laptop.getImageURL());
+        int rowsAffected = namedParameterJdbcTemplate.update(sql, params);
+        
+        if (rowsAffected > 0) {
+            // Lấy laptop_id vừa được thêm
+            String sqlGetLaptopId = "SELECT MAX(laptop_id) FROM Laptops";
+            Integer laptopId = namedParameterJdbcTemplate.queryForObject(sqlGetLaptopId, new MapSqlParameterSource(), Integer.class);
+            
+            // Thêm thông tin vào các bảng chi tiết liên quan
+            addCpuDetails(laptopId, laptop.getCpu());
+            addRamStorageDetails(laptopId, laptop.getRam());
+            addScreenDetails(laptopId, laptop.getScreen());
+            addGraphicsAudioDetails(laptopId, laptop.getGraphics_audio());
+            addPortFeaturesDetails(laptopId, laptop.getPorts_features());
+            addDimensionDetails(laptopId, laptop.getDimension_weight());
+            addOtherInfoDetails(laptopId, laptop.getOther_info());
+        }
+        return rowsAffected;
     }
 
-    public int updateLaptop(Laptop laptop) {
+	private int addRamStorageDetails(int laptopId, Ram_storage ramStorage) {
+	    String sql = "INSERT INTO RAM_Storage (laptop_id, ram, ram_type, ram_speed, max_ram, storage) " +
+	                 "VALUES (:laptop_id, :ram, :ram_type, :ram_speed, :max_ram, :storage)";
+	    MapSqlParameterSource params = new MapSqlParameterSource();
+	    params.addValue("laptop_id", laptopId);
+	    params.addValue("ram", ramStorage.getRam_min());  // Gán ram_min vào cột ram
+	    params.addValue("ram_type", ramStorage.getRam_type());
+	    params.addValue("ram_speed", ramStorage.getRam_speed());
+	    params.addValue("max_ram", ramStorage.getMax_ram());  // Gán max_ram vào cột max_ram
+	    params.addValue("storage", ramStorage.getRam_storage());  // Gán ram_storage vào cột storage
+	    
+	    return namedParameterJdbcTemplate.update(sql, params);
+	}
+
+	private int addOtherInfoDetails(int laptopId, Other_info otherInfo) {
+	    String sql = "INSERT INTO Other_info (laptop_id, battery, charger_power, operating_system, release_year) " +
+	                 "VALUES (:laptop_id, :battery, :charger_power, :operating_system, :release_year)";
+	    MapSqlParameterSource params = new MapSqlParameterSource();
+	    params.addValue("laptop_id", laptopId);
+	    params.addValue("battery", otherInfo.getBatery_info());  // Gán battery_info vào cột battery
+	    params.addValue("charger_power", otherInfo.getCharger_power());
+	    params.addValue("operating_system", otherInfo.getOperating_system());
+	    params.addValue("release_year", otherInfo.getRelease_date());  // Gán release_date vào cột release_year
+	    
+	    return namedParameterJdbcTemplate.update(sql, params);
+	}
+
+	private int addDimensionDetails(int laptopId, Dimension_weight dimension) {
+	    String sql = "INSERT INTO Dimension_weight (laptop_id, dimensions, weightt, material) " +
+	                 "VALUES (:laptop_id, :dimensions, :weightt, :material)";
+	    MapSqlParameterSource params = new MapSqlParameterSource();
+	    params.addValue("laptop_id", laptopId);
+	    params.addValue("dimensions", dimension.getDimension());
+	    params.addValue("weightt", dimension.getWeight());
+	    params.addValue("material", dimension.getMaterial());
+	    
+	    return namedParameterJdbcTemplate.update(sql, params);
+	}
+
+	private int addPortFeaturesDetails(int laptopId, Ports_features portFeatures) {
+	    String sql = "INSERT INTO Ports_features (laptop_id, portss, wireless, webcam, extra_features, keyboard_backlight) " +
+	                 "VALUES (:laptop_id, :portss, :wireless, :webcam, :extra_features, :keyboard_backlight)";
+	    MapSqlParameterSource params = new MapSqlParameterSource();
+	    params.addValue("laptop_id", laptopId);
+	    params.addValue("portss", portFeatures.getPort_type());
+	    params.addValue("wireless", portFeatures.getWireless_connection());
+	    params.addValue("webcam", portFeatures.getWebcam());
+	    params.addValue("extra_features", portFeatures.getExtra_features());
+	    params.addValue("keyboard_backlight", portFeatures.getKeyboard_blacklight());
+	    
+	    return namedParameterJdbcTemplate.update(sql, params);
+	}
+
+	private int addGraphicsAudioDetails(int laptopId, Graphics_audio graphicsAudio) {
+	    String sql = "INSERT INTO Graphics_Audio (laptop_id, graphics_card, audio_technology) " +
+	                 "VALUES (:laptop_id, :graphics_card, :audio_technology)";
+	    MapSqlParameterSource params = new MapSqlParameterSource();
+	    params.addValue("laptop_id", laptopId);
+	    params.addValue("graphics_card", graphicsAudio.getGraphics_card());
+	    params.addValue("audio_technology", graphicsAudio.getAudio_technology());
+	    
+	    return namedParameterJdbcTemplate.update(sql, params);
+	}
+
+	private int addScreenDetails(int laptopId, Screen screen) {
+	    String sql = "INSERT INTO Screen (laptop_id, screen_size, resolution, refresh_rate, color_coverage, screen_technology) " +
+	                 "VALUES (:laptop_id, :screen_size, :resolution, :refresh_rate, :color_coverage, :screen_technology)";
+	    MapSqlParameterSource params = new MapSqlParameterSource();
+	    params.addValue("laptop_id", laptopId);
+	    params.addValue("screen_size", screen.getScreen_size());
+	    params.addValue("resolution", screen.getResolution());
+	    params.addValue("refresh_rate", screen.getRefresh_rate());
+	    params.addValue("color_coverage", screen.getColor_coverage());
+	    params.addValue("screen_technology", screen.getScreen_technology());
+	    
+	    return namedParameterJdbcTemplate.update(sql, params);
+	}
+
+	private int addCpuDetails(int laptopId, CPU cpu) {
+	    String sql = "INSERT INTO CPU_Details (laptop_id, cpu_technology, cpu_cores, cpu_threads, cpu_base_clock, cpu_max_clock, cpu_cache) " +
+	                 "VALUES (:laptop_id, :cpu_technology, :cpu_cores, :cpu_threads, :cpu_base_clock, :cpu_max_clock, :cpu_cache)";
+	    MapSqlParameterSource params = new MapSqlParameterSource();
+	    params.addValue("laptop_id", laptopId);
+	    params.addValue("cpu_technology", cpu.getCpu_technology());
+	    params.addValue("cpu_cores", cpu.getNum_cores());
+	    params.addValue("cpu_threads", cpu.getNum_threads());
+	    params.addValue("cpu_base_clock", cpu.getCpu_speed());
+	    params.addValue("cpu_max_clock", cpu.getCpu_maxspeed());
+	    params.addValue("cpu_cache", cpu.getCache_size());
+	    
+	    return namedParameterJdbcTemplate.update(sql, params);
+	}
+
+	public int updateLaptop(Laptop laptop) {
         String sql = "UPDATE Laptops SET  laptop_name = :laptop_name, laptop_price = :laptop_price WHERE laptop_id = :laptop_id";
         MapSqlParameterSource params = new MapSqlParameterSource();
         params.addValue("laptop_id", laptop.getLaptop_id());

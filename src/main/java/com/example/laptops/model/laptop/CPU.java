@@ -1,8 +1,4 @@
 package com.example.laptops.model.laptop;
-
-
-
-
 public class CPU {
 
 	private int cpu_id;

@@ -32,7 +32,7 @@
                 <tr>
                     <td>Hình ảnh</td>
                     <td th:each="laptop : ${laptops}">
-                        <img th:src="@{laptop.imageURL}" alt="Laptop Image" style="width: 100px;"> 
+                        <img th:src="@{'/img1/'+ ${laptop.imageURL}}" alt="Laptop Image" style="width: 100px;"> 
                     </td>
                 </tr>
                 <tr>
